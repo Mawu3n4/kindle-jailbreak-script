@@ -38,10 +38,11 @@ while test $# -gt 0; do
 	    KVERSION_F=$(echo "$KVERSION" | tr ' ' '-')
 
 	    in_array SUPPORTED_VERSIONS "$KVERSION_F" > /dev/null && {
-		print_ok "Version: $kversion" 1
+		print_ok "Version: $KVERSION" 1
 	    } || {
 		print_ko "Unrecognized or unsupported version." 1
 		print_ko "Supported version are :" 1
+		KVERSION=""
 		print_array SUPPORTED_VERSIONS
 	    }
 	    shift
@@ -90,6 +91,9 @@ while [ "$DEVICE" == "" ] || [ $EXIST -eq 1 ] ; do
     }
 done
 
+
+print_ok "Device: $DEVICE: found." 1
+
 if [ ! -d "$MNT" ]; then
     CHECK=$(ls -d1 /media/* | grep -i "Kindle")
 
@@ -114,3 +118,21 @@ while [ ! -d "$MNT" ]; do
     }
 done
 
+print_ok "Mount point: $MNT." 1
+
+EXIST=1
+while [ "$KVERSION" == "" ] || [ $EXIST -eq 1 ] ; do
+    KVERSION=$(print_help "version")
+    KVERSION_F=$(echo "$KVERSION" | tr ' ' '-')
+
+    EXIST=$(in_array SUPPORTED_VERSIONS "$KVERSION_F")
+
+    ([ "$DEVICE" == "" ] || [ $EXIST -eq 1 ]) && {
+	print_ko "Unrecognized or unsupported version." 1
+	print_ko "Supported version are :" 1
+	KVERSION=""
+	print_array SUPPORTED_VERSIONS
+    }
+done
+
+print_ok "Version: $KVERSION" 1

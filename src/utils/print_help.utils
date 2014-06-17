@@ -29,6 +29,14 @@ function print_help() {
 		read DEVICE
 		echo $DEVICE
 		;;
+	    version)
+		shift
+		echo "" >&2
+		echo "Check your Kindle Serial number to find your Kindle version" >&2
+		echo -n "Version:... " >&2
+		read VERSION
+		echo $VERSION
+		;;
 	    *)
 		break
 		;;
