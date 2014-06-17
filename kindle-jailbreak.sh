@@ -1,32 +1,29 @@
 #!/bin/bash
 
-screensaver=0
-supported_versions=(`cat files/config/versions | cut -d'|' -f2 | tr ' ' '-' | tr '\n' ' '`)
-device=""
-mnt=""
-kversion=""
+SRC_PATH=`pwd`
+UTILS_PATH="$SRC_PATH/src/utils"
+INSTALL_PATH="$SRC_PATH/src/install"
 
-print_array() {
-    local array="$1[@]"
+function load_items () {
+    local PATTERN="$1"
+    local L_PATH="$2"
 
-    for element in "${!array}"; do
-	echo "     "$element | tr '-' ' '
+    ITEMS=`ls -1 $L_PATH | grep $PATTERN`
+
+    for ITEM in $ITEMS; do
+	. /$L_PATH/$ITEM
     done
 }
 
-in_array () {
-    local array="$1[@]"
-    local seeking=$2
-    local in=1
 
-    for element in "${!array}"; do
-        if [[ $element == $seeking ]]; then
-            in=0
-            break
-        fi
-    done
-    return $in
-}
+load_items ".utils$" $UTILS_PATH
+check_root
+
+SCREENSAVER=0
+SUPPORTED_VERSIONS=(`cat files/config/versions | cut -d'|' -f2 | tr ' ' '-' | tr '\n' ' '`)
+DEVICE=""
+MNT=""
+KVERSION=""
 
 while test $# -gt 0; do
     case "$1" in
@@ -43,33 +40,34 @@ while test $# -gt 0; do
 
 	-k)
 	    shift
-	    kversion="$1"
-	    kversion_f=$(echo "$kversion" | tr ' ' '-')
-	    in_array supported_versions "$kversion_f" && {
-		echo "[+] Version: $kversion"
+	    KVERSION="$1"
+	    KVERSION_F=$(echo "$KVERSION" | tr ' ' '-')
+	    in_array SUPPORTED_VERSIONS "$KVERSION_F" && {
+		print_ok "Version: $kversion"
 	    } || {
-		echo "[-] Unrecognized or unsupported version."
-		echo "[-] Supported version are :"
-		print_array supported_versions
+		print_ko "Unrecognized or unsupported version."
+		print_ko "Supported version are :"
+		print_array SUPPORTED_VERSIONS
 	    }
 	    shift
 	    ;;
 
 	-d)
 	    shift
-	    device="$1"
-	    echo "Device: $device"
+	    DEVICE="$1"
+	    print_ok "Device: $DEVICE"
 	    shift
 	    ;;
 
 	-m)
 	    shift
-	    mnt="$1"
-	    echo "Mount point: $mnt"
+	    MNT="$1"
+	    echo "Mount point: $MNT"
 	    shift
 	    ;;
 
 	--screensaver)
+	    SCREENSAVER=1
 	    echo "Screensaver hack"
 	    shift
 	    ;;
@@ -79,3 +77,5 @@ while test $# -gt 0; do
 	    ;;
     esac
 done
+
+

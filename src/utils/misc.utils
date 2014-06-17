@@ -1,0 +1,44 @@
+#!/bin/bash
+
+GREEN="[0;32m"
+RED="[0;31m"
+CLEAN="[0m"
+
+ROOT_UID=0
+
+function print_array() {
+    local array="$1[@]"
+
+    for element in "${!array}"; do
+        echo "     "$element | tr '-' ' '
+    done
+}
+
+function in_array() {
+    local array="$1[@]"
+    local seeking=$2
+    local in=1
+
+    for element in "${!array}"; do
+        if [[ $element == $seeking ]]; then
+            in=0
+            break
+        fi
+    done
+    return $in
+}
+
+function print_ok() {
+    echo "$GREEN[+]$CLEAN $1"
+}
+
+function print_ko() {
+    echo "$RED[-]$CLEAN $1"
+}
+
+function check_root() {
+    if [ $UID -ne $ROOT_UID ] ; then
+	print_ko "You must be root to do that!"
+	exit 1
+    fi
+}
