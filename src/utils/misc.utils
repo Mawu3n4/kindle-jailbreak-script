@@ -25,6 +25,7 @@ function in_array() {
             break
         fi
     done
+    echo $in
     return $in
 }
 

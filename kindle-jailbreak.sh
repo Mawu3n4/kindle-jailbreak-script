@@ -29,14 +29,7 @@ KVERSION=""
 while test $# -gt 0; do
     case "$1" in
 	-h | --help)
-	    echo "Usage: ./kindle-jailbreak"
-	    echo "options:"
-	    echo "	-h, --help		Display this help and exit"
-	    echo "	-k [VERSION]		Specify Kindle version"
-	    echo "	-d [DEVICE]		Specify device to mount"
-	    echo "	-m [MNT]		Specify mount point"
-	    echo "	--screensaver		Install screensaver hack"
-	    exit 0
+	    print_help "usage"
 	    ;;
 
 	-k)
@@ -56,13 +49,14 @@ while test $# -gt 0; do
 
 	-d)
 	    shift
-	    DEVICE=$(locate $1)
+	    DEVICE=$(locate $1 2>/dev/null | head -1)
 
-	    in_array DEVICES "$DEVICE" && {
+	    in_array DEVICES "$DEVICE" > /dev/null && {
 		print_ok "Device: $DEVICE: found."
 	    } || {
 		print_ko "Device: $DEVICE: not found."
 		DEVICE=""
+		EXIST=1
 	    }
 
 	    shift
@@ -71,13 +65,13 @@ while test $# -gt 0; do
 	-m)
 	    shift
 	    MNT="$1"
-	    echo "Mount point: $MNT"
+	    print_ok "Mount point: $MNT."
 	    shift
 	    ;;
 
 	--screensaver)
 	    SCREENSAVER=1
-	    echo "Screensaver hack"
+	    print_ok "Screensaver hack will be installed."
 	    shift
 	    ;;
 
@@ -87,4 +81,15 @@ while test $# -gt 0; do
     esac
 done
 
+while [ "$DEVICE" == "" ] || [ $EXIST -eq 1 ] ; do
+    DEVICE=$(print_help "device")
+    EXIST=$(in_array DEVICES "$DEVICE")
 
+    ([ "$DEVICE" == "" ] || [ $EXIST -eq 1 ]) && {
+	print_ko "Device not specified or not found: $DEVICE."
+    }
+done
+
+if [ "$MNT" == "" ]; then
+    MNT=$(print_help "mount")
+fi
