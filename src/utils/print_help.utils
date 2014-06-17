@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function print_help() {
+    echo "Usage: ./kindle-jailbreak"
+    echo "options:"
+    echo "      -h, --help              Display this help and exit"
+    echo "      -k [VERSION]            Specify Kindle version"
+    echo "      -d [DEVICE]             Specify device to mount"
+    echo "      -m [MNT]                Specify mount point"
+    echo "      --screensaver           Install screensaver hack"
+    exit 0
+}
