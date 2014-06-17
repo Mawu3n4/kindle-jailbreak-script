@@ -102,6 +102,9 @@ if [ $MOUNTED -eq 0 ]; then
     mount $DEVICE $MNT
 fi
 
+########################
+### Here for testing ###
+########################
 echo ""
 echo "Kindle version: $KVERSION"
 echo "Firmware: $(cat files/config/versions | grep "$KVERSION" | cut -d'|' -f1)"
