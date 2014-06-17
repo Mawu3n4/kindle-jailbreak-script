@@ -22,6 +22,7 @@ check_root
 SCREENSAVER=0
 SUPPORTED_VERSIONS=(`cat files/config/versions | cut -d'|' -f2 | tr ' ' '-' | tr '\n' ' '`)
 DEVICE=""
+DEVICES=(`ls -1 /dev/sd*`)
 MNT=""
 KVERSION=""
 
@@ -42,6 +43,7 @@ while test $# -gt 0; do
 	    shift
 	    KVERSION="$1"
 	    KVERSION_F=$(echo "$KVERSION" | tr ' ' '-')
+
 	    in_array SUPPORTED_VERSIONS "$KVERSION_F" && {
 		print_ok "Version: $kversion"
 	    } || {
@@ -54,8 +56,15 @@ while test $# -gt 0; do
 
 	-d)
 	    shift
-	    DEVICE="$1"
-	    print_ok "Device: $DEVICE"
+	    DEVICE=$(locate $1)
+
+	    in_array DEVICES "$DEVICE" && {
+		print_ok "Device: $DEVICE: found."
+	    } || {
+		print_ko "Device: $DEVICE: not found."
+		DEVICE=""
+	    }
+
 	    shift
 	    ;;
 
