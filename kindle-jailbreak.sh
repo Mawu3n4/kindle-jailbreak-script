@@ -37,11 +37,11 @@ while test $# -gt 0; do
 	    KVERSION="$1"
 	    KVERSION_F=$(echo "$KVERSION" | tr ' ' '-')
 
-	    in_array SUPPORTED_VERSIONS "$KVERSION_F" && {
-		print_ok "Version: $kversion"
+	    in_array SUPPORTED_VERSIONS "$KVERSION_F" > /dev/null && {
+		print_ok "Version: $kversion" 1
 	    } || {
-		print_ko "Unrecognized or unsupported version."
-		print_ko "Supported version are :"
+		print_ko "Unrecognized or unsupported version." 1
+		print_ko "Supported version are :" 1
 		print_array SUPPORTED_VERSIONS
 	    }
 	    shift
@@ -52,9 +52,9 @@ while test $# -gt 0; do
 	    DEVICE=$(locate $1 2>/dev/null | head -1)
 
 	    in_array DEVICES "$DEVICE" > /dev/null && {
-		print_ok "Device: $DEVICE: found."
+		print_ok "Device: $DEVICE: found." 1
 	    } || {
-		print_ko "Device: $DEVICE: not found."
+		print_ko "Device: $DEVICE: not found." 1
 		DEVICE=""
 		EXIST=1
 	    }
@@ -65,13 +65,13 @@ while test $# -gt 0; do
 	-m)
 	    shift
 	    MNT="$1"
-	    print_ok "Mount point: $MNT."
+	    print_ok "Mount point: $MNT." 1
 	    shift
 	    ;;
 
 	--screensaver)
 	    SCREENSAVER=1
-	    print_ok "Screensaver hack will be installed."
+	    print_ok "Screensaver hack will be installed." 1
 	    shift
 	    ;;
 
@@ -82,14 +82,35 @@ while test $# -gt 0; do
 done
 
 while [ "$DEVICE" == "" ] || [ $EXIST -eq 1 ] ; do
-    DEVICE=$(print_help "device")
+    DEVICE=$(locate $(print_help "device") 2>/dev/null | head -1)
     EXIST=$(in_array DEVICES "$DEVICE")
 
     ([ "$DEVICE" == "" ] || [ $EXIST -eq 1 ]) && {
-	print_ko "Device not specified or not found: $DEVICE."
+	print_ko "Device not specified or not found: $DEVICE." 1
     }
 done
 
-if [ "$MNT" == "" ]; then
-    MNT=$(print_help "mount")
+if [ ! -d "$MNT" ]; then
+    CHECK=$(ls -d1 /media/* | grep -i "Kindle")
+
+    if [ ! `echo -n $CHECK | wc -c` -eq 0 ]; then
+	print_ok "Mount point: $CHECK: found, use it ?: [Y/n]..." 0
+	read YN
+	case "$YN" in
+	    n)
+		MNT=""
+		;;
+	    *)
+		MNT="$CHECK"
+		;;
+	esac
+    fi
 fi
+
+while [ ! -d "$MNT" ]; do
+    MNT=$(print_help "mount")
+    [ ! -d "$MNT" ] && {
+	print_ko "Mount point: $MNT: not found. Try specifyin full path." 1
+    }
+done
+

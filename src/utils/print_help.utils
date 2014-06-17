@@ -15,6 +15,7 @@ function print_help() {
 		;;
 	    mount)
 		shift
+		echo "" >&2
 		echo "Mount your kindle and specify mount point" >&2
 		echo -n "Mount point:... " >&2
 		read MNT
@@ -22,6 +23,7 @@ function print_help() {
 		;;
 	    device)
 		shift
+		echo "" >&2
 		echo "Plug your Kindle via USB and specify the according device" >&2
 		echo -n "Device:... " >&2
 		read DEVICE

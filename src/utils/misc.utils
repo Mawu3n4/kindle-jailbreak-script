@@ -30,11 +30,15 @@ function in_array() {
 }
 
 function print_ok() {
-    echo "$GREEN[+]$CLEAN $1"
+    LF=$2
+
+    [ $LF -eq 1 ] && echo "$GREEN[+]$CLEAN $1" || echo -n "$GREEN[+]$CLEAN $1"
 }
 
 function print_ko() {
-    echo "$RED[-]$CLEAN $1"
+    LF=$2
+
+    [ $LF -eq 1 ] && echo "$RED[+]$CLEAN $1" || echo -n "$RED[+]$CLEAN $1"
 }
 
 function check_root() {
