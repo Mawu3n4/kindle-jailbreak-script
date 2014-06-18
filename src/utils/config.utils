@@ -35,6 +35,7 @@ function get_device() {
     while [ "$DEVICE" == "" ] || [ $EXIST -eq 1 ] ; do
         print_help "device"
 
+	DEVICES=(`ls -1 /dev/sd*`)
         DEVICE=$(ls -d1 /dev/* | grep $DEVICE)
         EXIST=$(in_array DEVICES "$DEVICE")
 
