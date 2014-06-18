@@ -51,12 +51,13 @@ while test $# -gt 0; do
 
 	-d)
 	    shift
+	    INPUT=$1
 	    DEVICE=$(ls -d1 /dev/* | grep $1)
 
 	    in_array DEVICES "$DEVICE" > /dev/null && {
 		print_ok "Device: $DEVICE: found" 1
 	    } || {
-		print_ko "Device: $DEVICE: not found" 1
+		print_ko "Device: $INPUT: not found" 1
 		DEVICE=""
 		EXIST=1
 	    }
@@ -102,7 +103,8 @@ if [ ! -d "$MNT" ]; then
 fi
 
 while [ ! -d "$MNT" ]; do
-    MNT=$(print_help "mount")
+    print_help "mount"
+
     [ ! -d "$MNT" ] && {
 	print_ko "Mount point: $MNT: not found. Try specifyin full path" 1
     }
@@ -112,12 +114,11 @@ print_ok "Mount point: $MNT" 1
 
 if [ `mountpoint $MNT | grep "not" | wc -l` -eq 1 ]; then
     while [ "$DEVICE" == "" ] || [ $EXIST -eq 1 ] ; do
-	INPUT=$(print_help "device")
-	DEVICE=$(ls -d1 /dev/* | grep $INPUT)
+	print_help "device"
+
+	DEVICE=$(ls -d1 /dev/* | grep $DEVICE)
 	EXIST=$(in_array DEVICES "$DEVICE")
 
-	echo $DEVICE
-	echo $EXIST
 	([ "$DEVICE" == "" ] || [ $EXIST -eq 1 ]) && {
 	    print_ko "Device not specified or not found: $DEVICE" 1
 	}
@@ -131,7 +132,7 @@ fi
 
 EXIST=1
 while [ "$KVERSION" == "" ] || [ $EXIST -eq 1 ] ; do
-    KVERSION=$(print_help "version")
+    print_help "version"
     KVERSION_F=$(echo "$KVERSION" | tr ' ' '-')
 
     EXIST=$(in_array SUPPORTED_VERSIONS "$KVERSION_F")

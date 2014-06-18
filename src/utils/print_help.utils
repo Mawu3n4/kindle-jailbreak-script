@@ -19,7 +19,7 @@ function print_help() {
 		echo "Mount your kindle and specify mount point" >&2
 		echo -n "Mount point:... " >&2
 		read MNT
-		echo $MNT
+		export MNT=$MNT
 		;;
 	    device)
 		shift
@@ -27,15 +27,15 @@ function print_help() {
 		echo "Plug your Kindle via USB and specify the according device" >&2
 		echo -n "Device:... " >&2
 		read DEVICE
-		echo $DEVICE
+		export DEVICE=$DEVICE
 		;;
 	    version)
 		shift
 		echo "" >&2
 		echo "Check your Kindle Serial number to find your Kindle version" >&2
 		echo -n "Version:... " >&2
-		read VERSION
-		echo $VERSION
+		read KVERSION
+		export KVERSION="$KVERSION"
 		;;
 	    *)
 		break
