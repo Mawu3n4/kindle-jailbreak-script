@@ -18,8 +18,8 @@ Script created thanks to ressources from [MobileRead](http://www.mobileread.com/
 
 ##TO-DO
 
-* Detect mount point
-* Detect device
+* ~~Detect mount point~~
+* ~~Detect device~~
 * Install process
 * Prettify output
 * Get ressources on-the-fly
