@@ -23,3 +23,7 @@ Script created thanks to ressources from [MobileRead](http://www.mobileread.com/
 * Install process
 * Prettify output
 * Get ressources on-the-fly
+* ~~Kindle 1 support~~
+* ~~Kindle 2 support~~
+* ~~Kindle 3 support~~
+* Kindle 4 support
