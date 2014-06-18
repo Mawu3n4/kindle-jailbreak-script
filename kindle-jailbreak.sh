@@ -84,72 +84,28 @@ while test $# -gt 0; do
     esac
 done
 
-
-if [ ! -d "$MNT" ]; then
-    CHECK=$(ls -d1 /media/* | grep -i "Kindle")
-
-    if [ ! `echo -n $CHECK | wc -c` -eq 0 ]; then
-	print_ok "Mount point: $CHECK: found, use it ?: [Y/n].." 0
-	read YN
-	case "$YN" in
-	    n)
-		MNT=""
-		;;
-	    *)
-		MNT="$CHECK"
-		;;
-	esac
-    fi
-fi
-
-while [ ! -d "$MNT" ]; do
-    print_help "mount"
-
-    [ ! -d "$MNT" ] && {
-	print_ko "Mount point: $MNT: not found. Try specifyin full path" 1
-    }
-done
-
+get_mountpoint
 print_ok "Mount point: $MNT" 1
 
 if [ `mountpoint $MNT | grep "not" | wc -l` -eq 1 ]; then
-    while [ "$DEVICE" == "" ] || [ $EXIST -eq 1 ] ; do
-	print_help "device"
-
-	DEVICE=$(ls -d1 /dev/* | grep $DEVICE)
-	EXIST=$(in_array DEVICES "$DEVICE")
-
-	([ "$DEVICE" == "" ] || [ $EXIST -eq 1 ]) && {
-	    print_ko "Device not specified or not found: $DEVICE" 1
-	}
-    done
-
+    get_device
     print_ok "Device: $DEVICE: found" 1
 else
     print_ok "Mount point: $MNT: mounted" 1
     MOUNTED=1
 fi
 
-EXIST=1
-while [ "$KVERSION" == "" ] || [ $EXIST -eq 1 ] ; do
-    print_help "version"
-    KVERSION_F=$(echo "$KVERSION" | tr ' ' '-')
-
-    EXIST=$(in_array SUPPORTED_VERSIONS "$KVERSION_F")
-
-    ([ "$KVERSION" == "" ] || [ $EXIST -eq 1 ]) && {
-	print_ko "Unrecognized or unsupported version" 1
-	print_ko "Supported version are :" 1
-	KVERSION=""
-	print_array SUPPORTED_VERSIONS
-    }
-done
-
+get_version
 print_ok "Version: $KVERSION" 1
 
 if [ $MOUNTED -eq 0 ]; then
     mount $DEVICE $MNT
 fi
 
+echo ""
+echo "Kindle version: $KVERSION"
+echo "Firmware: $(cat files/config/versions | grep "$KVERSION" | cut -d'|' -f1)"
+echo "Mountpoint: $MNT"
 
 umount $MNT
+
