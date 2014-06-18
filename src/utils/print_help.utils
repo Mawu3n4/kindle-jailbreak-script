@@ -11,8 +11,10 @@ function print_help() {
 		echo "      -d [DEVICE]             Specify device to mount"
 		echo "      -m [MNT]                Specify mount point"
 		echo "      --screensaver           Install screensaver hack"
+		echo "      --uninstall		    Uninstall Jailbreak"
 		exit 0
 		;;
+
 	    mount)
 		shift
 		echo "" >&2
@@ -21,6 +23,7 @@ function print_help() {
 		read MNT
 		export MNT=$MNT
 		;;
+
 	    device)
 		shift
 		echo "" >&2
@@ -29,6 +32,7 @@ function print_help() {
 		read DEVICE
 		export DEVICE=$DEVICE
 		;;
+
 	    version)
 		shift
 		echo "" >&2
@@ -37,6 +41,20 @@ function print_help() {
 		read KVERSION
 		export KVERSION="$KVERSION"
 		;;
+
+	    update)
+		shift
+		echo "    Unplug your Kindle from your computer" >&2
+		echo "    Click Menu > Settings > Menu > Update Your Kindle" >&2
+		echo "    On FW 2.x, the process WILL fail, don't worry" >&2
+		;;
+
+	    end)
+		shift
+		print_ok "Done !" 1
+		echo "    To uninstall the Jailbreak, run the script with --uninstall" >&2
+		;;
+
 	    *)
 		break
 		;;

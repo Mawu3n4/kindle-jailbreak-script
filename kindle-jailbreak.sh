@@ -3,6 +3,9 @@
 SRC_PATH=`pwd`
 UTILS_PATH="$SRC_PATH/src/utils"
 INSTALL_PATH="$SRC_PATH/src/install"
+TMP_="$SRC_PATH/tmp"
+KINDLE4="$SRC_PATH/files/archives/kindle-k4-jailbreak-1.7.N.tar.gz"
+KINDLE_="$SRC_PATH/files/archives/kindle-jailbreak-0.12.N.tar.gz"
 
 function load_items () {
     local PATTERN="$1"
@@ -26,6 +29,7 @@ DEVICES=(`ls -1 /dev/sd*`)
 MNT=""
 MOUNTED=0
 KVERSION=""
+INSTALL="_install.bin"
 
 while test $# -gt 0; do
     case "$1" in
@@ -78,6 +82,12 @@ while test $# -gt 0; do
 	    shift
 	    ;;
 
+	--uninstall)
+	    INSTALL="_uninstall.bin"
+	    print_ok "Jailbreak will be uninstalled" 1
+	    shift
+	    ;;
+
 	*)
 	    break
 	    ;;
@@ -110,5 +120,21 @@ echo "Kindle version: $KVERSION"
 echo "Firmware: $(cat files/config/versions | grep "$KVERSION" | cut -d'|' -f1)"
 echo "Mountpoint: $MNT"
 
-umount $MNT
+mkdir $TMP_ 2>/dev/null
+
+if [ "$KVERSION" == "Kindle 4" ]; then
+    extract $KINDLE4 $TMP_
+else
+    extract $KINDLE_ $TMP_
+    FIRMWARE=$(tree -fil tmp | grep "_install" | grep $(cat files/config/versions| grep "Kindle 2 US"| cut -d '|' -f1))
+    cp $FIRMWARE $MNT
+    umount $MNT
+    print_ok "$MNT: unmounted" 1
+    print_ok "You need to update your Kindle" 1
+    print_help "update"
+fi
+
+print_help "end"
+rm -rf $TMP_
+
 

@@ -42,8 +42,8 @@ function print_ko() {
 }
 
 function check_root() {
-    if [ $UID -ne $ROOT_UID ] ; then
-	print_ko "You must be root to do that!"
+    if [ $UID != $ROOT_UID ] ; then
+	print_ko "You must be root to do that!" 1
 	exit 1
     fi
 }
@@ -53,8 +53,8 @@ function extract() {
     DEST=$2
     EXTCMD="tar xzvf $FILE "
 
-    if [ "$DEST" != ""]; then $EXTCMD="tar xzvf $FILE -C $DEST"; fi
+    if [ "$DEST" != "" ]; then EXTCMD="tar xzvf $FILE -C $DEST"; fi
 
-    print_ok "Extracting '$FILE' ('$EXTCMD')... "
+    print_ok "Extracting '$FILE' ('$EXTCMD')... " 1
     $EXTCMD
 }
