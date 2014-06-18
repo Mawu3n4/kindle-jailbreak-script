@@ -47,3 +47,14 @@ function check_root() {
 	exit 1
     fi
 }
+
+function extract() {
+    FILE=$1
+    DEST=$2
+    EXTCMD="tar xzvf $FILE "
+
+    if [ "$DEST" != ""]; then $EXTCMD="tar xzvf $FILE -C $DEST"; fi
+
+    print_ok "Extracting '$FILE' ('$EXTCMD')... "
+    $EXTCMD
+}
