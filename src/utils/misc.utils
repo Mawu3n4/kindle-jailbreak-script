@@ -58,3 +58,23 @@ function extract() {
     print_ok "Extracting '$FILE' ('$EXTCMD')... " 1
     $EXTCMD
 }
+
+function mount_fct() {
+    MODE=$1
+
+    case "$MODE" in
+	mount)
+	    mount $DEVICE $MNT
+	    print_ok "$DEVICE: mounted on $MNT" 1
+	    ;;
+
+	unmount)
+	    umount $MNT
+	    print_ok "$MNT: unmounted" 1
+	    ;;
+
+	*)
+	    break
+	    ;;
+    esac
+}

@@ -6,15 +6,18 @@ function jailbreak_install() {
 
     mkdir $TMP_ 2>/dev/null
 
+    if [ $MOUNTED -eq 0 ]; then mount_fct "mount"; fi
+
     if [ "$KVERSION" == "Kindle 4" ]; then
 	extract $KINDLE4 $TMP_
     else
 	extract $KINDLE_ $TMP_
+
 	FIRMWARE=$(tree -fil $TMP_ | grep $INSTALL | grep $(cat files/config/versions| grep "Kindle 2 US"| cut -d '|' -f1))
 	print_ok "Firmware found: $FIRMWARE" 1
+
 	cp $FIRMWARE $MNT
-	umount $MNT
-	print_ok "$MNT: unmounted" 1
+	mount_fct "unmount"
 	print_ok "You need to update your Kindle" 1
 	print_help "update"
     fi
