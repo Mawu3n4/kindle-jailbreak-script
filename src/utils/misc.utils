@@ -64,11 +64,13 @@ function mount_fct() {
 
     case "$MODE" in
 	mount)
+	    shift
 	    mount $DEVICE $MNT
 	    print_ok "$DEVICE: mounted on $MNT" 1
 	    ;;
 
 	unmount)
+	    shift
 	    umount $MNT
 	    print_ok "$MNT: unmounted" 1
 	    ;;
