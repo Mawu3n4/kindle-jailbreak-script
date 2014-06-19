@@ -41,6 +41,7 @@ function get_device() {
 
         ([ "$DEVICE" == "" ] || [ $EXIST -eq 1 ]) && {
             print_ko "Device not specified or not found: $DEVICE" 1
+	    echo "    Available devices: ${DEVICES[@]}"
         }
     done
 
