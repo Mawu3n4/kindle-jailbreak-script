@@ -1,0 +1,23 @@
+
+function jailbreak_install() {
+    TMP_=$1
+    KINDLE4="$SRC_PATH/files/archives/kindle-k4-jailbreak-1.7.N.tar.gz"
+    KINDLE_="$SRC_PATH/files/archives/kindle-jailbreak-0.12.N.tar.gz"
+
+    mkdir $TMP_ 2>/dev/null
+
+    if [ "$KVERSION" == "Kindle 4" ]; then
+	extract $KINDLE4 $TMP_
+    else
+	extract $KINDLE_ $TMP_
+	FIRMWARE=$(tree -fil $TMP_ | grep $INSTALL | grep $(cat files/config/versions| grep "Kindle 2 US"| cut -d '|' -f1))
+	print_ok "Firmware found: $FIRMWARE" 1
+	cp $FIRMWARE $MNT
+	umount $MNT
+	print_ok "$MNT: unmounted" 1
+	print_ok "You need to update your Kindle" 1
+	print_help "update"
+    fi
+
+    rm -rf $TMP_
+}

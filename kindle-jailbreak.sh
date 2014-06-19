@@ -131,7 +131,7 @@ export SRC_PATH=$SRC_PATH
 export INSTALL=$INSTALL
 
 jailbreak_install
-[ $SCREENSAVER ] && screensaver_install
-[ $CUSTOM_FONTS ] && custom_fonts_install
+[ $SCREENSAVER -eq 1 ] && screensaver_install
+[ $CUSTOM_FONTS -eq 1 ] && custom_fonts_install
 
 print_help "end"

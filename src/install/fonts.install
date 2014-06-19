@@ -1,0 +1,4 @@
+
+function custom_fonts_install() {
+    print_ok "Installing custom fonts hack..." 1
+}

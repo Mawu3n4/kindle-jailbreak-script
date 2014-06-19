@@ -1,0 +1,4 @@
+
+function screensaver_install() {
+    print_ok "Installing screensaver hack..." 1
+}
