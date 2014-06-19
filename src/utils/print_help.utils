@@ -13,6 +13,7 @@ function print_help() {
 		echo "      --screensaver           Install screensaver hack"
 		echo "      --fonts                 Install custom fonts hack"
 		echo "      --uninstall		    Uninstall Jailbreak"
+		echo "	    --no		    Skip Jailbreak install"
 		exit 0
 		;;
 

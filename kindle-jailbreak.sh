@@ -24,6 +24,7 @@ load_items ".install$" $INSTALL_PATH
 check_root
 
 CUSTOM_FONTS=0
+JAILBREAK=1
 SCREENSAVER=0
 SUPPORTED_VERSIONS=(`cat files/config/versions | cut -d'|' -f2 | tr ' ' '-' | tr '\n' ' '`)
 DEVICE=""
@@ -37,6 +38,11 @@ while test $# -gt 0; do
     case "$1" in
 	-h | --help)
 	    print_help "usage"
+	    ;;
+
+	--no)
+	    shift
+	    JAILBREAK=0
 	    ;;
 
 	-k)
@@ -116,22 +122,18 @@ fi
 get_version
 print_ok "Version: $KVERSION" 1
 
-if [ $MOUNTED -eq 0 ]; then
-    mount $DEVICE $MNT
-    print_ok "$DEVICE mounted on $MNT" 1
-fi
-
 ############################################
-### Make variables available in .install ###
+### Make variables available in install/ ###
 ############################################
 export KVERSION=$KVERSION
 export MNT=$MNT
-export DEVICE=$DEVICES
+export DEVICE=$DEVICE
 export SRC_PATH=$SRC_PATH
 export INSTALL=$INSTALL
+export MOUNTED=$MOUNTED
 
-jailbreak_install
-[ $SCREENSAVER -eq 1 ] && screensaver_install
-[ $CUSTOM_FONTS -eq 1 ] && custom_fonts_install
+[ $JAILBREAK -eq 1 ] && jailbreak_install $TMP
+[ $SCREENSAVER -eq 1 ] && screensaver_install $TMP
+[ $CUSTOM_FONTS -eq 1 ] && custom_fonts_install $TMP
 
 print_help "end"
