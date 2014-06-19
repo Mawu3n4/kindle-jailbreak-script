@@ -11,6 +11,7 @@ function print_help() {
 		echo "      -d [DEVICE]             Specify device to mount"
 		echo "      -m [MNT]                Specify mount point"
 		echo "      --screensaver           Install screensaver hack"
+		echo "      --fonts                 Install custom fonts hack"
 		echo "      --uninstall		    Uninstall Jailbreak"
 		exit 0
 		;;

@@ -20,8 +20,10 @@ function load_items () {
 
 
 load_items ".utils$" $UTILS_PATH
+load_items ".install$" $INSTALL_PATH
 check_root
 
+CUSTOM_FONTS=0
 SCREENSAVER=0
 SUPPORTED_VERSIONS=(`cat files/config/versions | cut -d'|' -f2 | tr ' ' '-' | tr '\n' ' '`)
 DEVICE=""
@@ -82,6 +84,12 @@ while test $# -gt 0; do
 	    shift
 	    ;;
 
+	--fonts)
+	    CUSTOM_FONTS=1
+	    print_ok "Custom fonts hack will be installed" 1
+	    shift
+	    ;;
+
 	--uninstall)
 	    INSTALL="_uninstall.bin"
 	    print_ok "Jailbreak will be uninstalled" 1
@@ -110,31 +118,20 @@ print_ok "Version: $KVERSION" 1
 
 if [ $MOUNTED -eq 0 ]; then
     mount $DEVICE $MNT
+    print_ok "$DEVICE mounted on $MNT" 1
 fi
 
-########################
-### Here for testing ###
-########################
-echo ""
-echo "Kindle version: $KVERSION"
-echo "Firmware: $(cat files/config/versions | grep "$KVERSION" | cut -d'|' -f1)"
-echo "Mountpoint: $MNT"
+############################################
+### Make variables available in .install ###
+############################################
+export KVERSION=$KVERSION
+export MNT=$MNT
+export DEVICE=$DEVICES
+export SRC_PATH=$SRC_PATH
+export INSTALL=$INSTALL
 
-mkdir $TMP_ 2>/dev/null
-
-if [ "$KVERSION" == "Kindle 4" ]; then
-    extract $KINDLE4 $TMP_
-else
-    extract $KINDLE_ $TMP_
-    FIRMWARE=$(tree -fil tmp | grep "_install" | grep $(cat files/config/versions| grep "Kindle 2 US"| cut -d '|' -f1))
-    cp $FIRMWARE $MNT
-    umount $MNT
-    print_ok "$MNT: unmounted" 1
-    print_ok "You need to update your Kindle" 1
-    print_help "update"
-fi
+jailbreak_install
+[ $SCREENSAVER ] && screensaver_install
+[ $CUSTOM_FONTS ] && custom_fonts_install
 
 print_help "end"
-rm -rf $TMP_
-
-
