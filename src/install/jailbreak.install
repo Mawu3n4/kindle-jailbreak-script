@@ -13,7 +13,7 @@ function jailbreak_install() {
     else
 	extract $KINDLE_ $TMP_
 
-	FIRMWARE=$(tree -fil $TMP_ | grep $INSTALL | grep $(cat files/config/versions| grep "Kindle 2 US"| cut -d '|' -f1))
+	FIRMWARE=$(tree -fil $TMP_ | grep $INSTALL | grep $(cat files/config/versions| grep $KVERSION | cut -d '|' -f1))
 	print_ok "Firmware found: $FIRMWARE" 1
 
 	cp $FIRMWARE $MNT
