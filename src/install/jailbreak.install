@@ -4,23 +4,23 @@ function jailbreak_install() {
     KINDLE4="$SRC_PATH/files/archives/kindle-k4-jailbreak-1.7.N.tar.gz"
     KINDLE_="$SRC_PATH/files/archives/kindle-jailbreak-0.12.N.tar.gz"
 
-    mkdir $TMP_ 2>/dev/null
+    mkdir "$TMP_" 2>/dev/null
 
     if [ $MOUNTED -eq 0 ]; then mount_fct "mount"; fi
 
     if [ "$KVERSION" == "Kindle 4" ]; then
-	extract $KINDLE4 $TMP_
+	extract "$KINDLE4" "$TMP_"
     else
-	extract $KINDLE_ $TMP_
+	extract "$KINDLE_" "$TMP_"
 
-	FIRMWARE=$(tree -fil $TMP_ | grep $INSTALL | grep $(cat files/config/versions| grep $KVERSION | cut -d '|' -f1))
+	FIRMWARE=$(tree -fil "$TMP_" | grep "$INSTALL" | grep $(cat files/config/versions| grep "$KVERSION" | cut -d '|' -f1))
 	print_ok "Firmware found: $FIRMWARE" 1
 
-	cp $FIRMWARE $MNT
+	cp "$FIRMWARE" "$MNT"
 	mount_fct "unmount"
 	print_ok "Jailbreaked ! You need to update your Kindle" 1
 	print_help "update"
     fi
 
-    rm -rf $TMP_
+    rm -rf "$TMP_"
 }
