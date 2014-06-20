@@ -1,4 +1,31 @@
 
 function screensaver_install() {
-    print_ok "Installing screensaver hack..." 1
+    TMP_=$1
+    KINDLE_="$SRC_PATH/files/archives/kindle-ss-0.44.N.tar.gz"
+
+    mkdir $TMP_ 2>/dev/null
+
+    if [ $MOUNTED -eq 0 ]; then mount_fct "mount"; fi
+
+    extract $KINDLE_ $TMP_
+
+    FIRMWARE=$(tree -fil $TMP_ | grep $INSTALL | grep $(cat files/config/versions| grep $KVERSION | cut -d '|' -f1))
+    print_ok "Firmware found: $FIRMWARE" 1
+
+    cp $FIRMWARE $MNT
+    print_ok "Screensaver hack installed" 1
+
+    mkdir $MNT/linkss 2>/dev/null
+    echo "    Do you wish to randomize your screensavers ? [Y/n] "
+    read YN
+    if [ "$YN" != "n" ]; then touch $MNT/linkss/random; fi
+    echo "    Do you wish to shuffle your screensavers ? [Y/n] "
+    read YN
+    if [ "$YN" != "n" ]; then touch $MNT/linkss/shuffle; fi
+
+    print_ok "Move your custom screensavers to $MNT/linkss/screensavers" 1
+    print_help "update"
+
+    rm -rf $TMP_
+    mount_fct "unmount"
 }

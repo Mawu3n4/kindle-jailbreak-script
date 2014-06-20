@@ -18,7 +18,7 @@ function jailbreak_install() {
 
 	cp $FIRMWARE $MNT
 	mount_fct "unmount"
-	print_ok "You need to update your Kindle" 1
+	print_ok "Jailbreaked ! You need to update your Kindle" 1
 	print_help "update"
     fi
 
