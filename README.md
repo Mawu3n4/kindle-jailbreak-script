@@ -22,8 +22,8 @@ Script created thanks to ressources from [MobileRead](http://www.mobileread.com/
 * ~~Detect device~~
 * ~~Install process~~
 * ~~Prettify output~~
-* Get ressources on-the-fl
-* Screensavers hack install
+* Get ressources on-the-fly
+* ~~Screensavers hack install~~
 * Custom fonts hack install
 * ~~Kindle 1 support~~
 * ~~Kindle 2 support~~
