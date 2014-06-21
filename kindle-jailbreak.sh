@@ -3,10 +3,20 @@
 SRC_PATH=$(pwd)
 UTILS_PATH="$SRC_PATH/src/utils"
 INSTALL_PATH="$SRC_PATH/src/install"
-TMP_="$SRC_PATH/tmp"
-KINDLE4="$SRC_PATH/files/archives/kindle-k4-jailbreak-1.7.N.tar.gz"
-KINDLE_="$SRC_PATH/files/archives/kindle-jailbreak-0.12.N.tar.gz"
 
+# PATH to dir. where tarballs will be extracted
+TMP_="$SRC_PATH/tmp"
+
+# Kindle 4 jailbreak tarball
+KINDLE4="$SRC_PATH/files/archives/kindle-k4-jailbreak-1.7.N.tar.gz"
+# Kindle 1-2-3 jailbreak tarball
+KINDLE_="$SRC_PATH/files/archives/kindle-jailbreak-0.12.N.tar.gz"
+# Screensaver hack tarball
+KINDLE_SS="$SRC_PATH/files/archives/kindle-ss-0.44.N.tar.gz"
+# Custom fonts hack tarball
+KINDLE_FTS=""
+
+# Load all files ending with $PATTERN in $L_PATH
 function load_items () {
     local PATTERN="$1"
     local L_PATH="$2"
@@ -18,21 +28,29 @@ function load_items () {
     done
 }
 
-
+# Load funcs
 load_items ".utils$" $UTILS_PATH
 load_items ".install$" $INSTALL_PATH
+# got root ?
 check_root
 
+# Options
 CUSTOM_FONTS=0
 JAILBREAK=1
 SCREENSAVER=0
+
 SUPPORTED_VERSIONS=($(cat files/config/versions | cut -d'|' -f2 | tr ' ' '-' | tr '\n' ' ')
-DEVICE=""
 DEVICES=($(ls -1 /dev/sd*))
+
+DEVICE=""
 MNT=""
-MOUNTED=0
 KVERSION=""
+
+MOUNTED=0
+
+# Will be changed to "_uninstall.bin" if --uninstall is used
 INSTALL="_install.bin"
+
 
 while test $# -gt 0; do
     case "$1" in
@@ -48,6 +66,8 @@ while test $# -gt 0; do
 	-k)
 	    shift
 	    KVERSION="$1"
+
+	    # KVERSION formatted to match the firmware in files/config/versions
 	    KVERSION_F=$(echo "$KVERSION" | tr ' ' '-')
 
 	    in_array SUPPORTED_VERSIONS "$KVERSION_F" > /dev/null && {
@@ -111,6 +131,7 @@ done
 get_mountpoint
 print_ok "Mount point: $MNT" 1
 
+# If $MNT is already mounted, no need for the $DEVICE variable
 if [ `mountpoint $MNT | grep "not" | wc -l` -eq 1 ]; then
     get_device
     print_ok "Device: $DEVICE: found" 1
@@ -122,9 +143,7 @@ fi
 get_version
 print_ok "Version: $KVERSION" 1
 
-############################################
-### Make variables available in install/ ###
-############################################
+# Make variables available in install/ ###
 export KVERSION=$KVERSION
 export MNT=$MNT
 export DEVICE=$DEVICE
@@ -133,12 +152,12 @@ export INSTALL=$INSTALL
 export MOUNTED=$MOUNTED
 
 if [ $JAILBREAK -eq 1 ]; then
-    if [ "$KVERSION" == "Kindle 4" ]; then install_hack "$TMP_" "$SRC_PATH/files/archives/kindle-k4-jailbreak-1.7.N.tar.gz" jailbreak_install
-    else; install_hack "$TMP_" "$SRC_PATH/files/archives/kindle-jailbreak-0.12.N.tar.gz" jailbreak_install
+    if [ "$KVERSION" == "Kindle 4" ]; then install_hack "$TMP_" "$KINDLE4" jailbreak_install
+    else; install_hack "$TMP_" "$KINDLE_" jailbreak_install
     fi
 fi
 
-[ $SCREENSAVER -eq 1 ] && install_hack "$TMP_" "$SRC_PATH/files/archives/kindle-ss-0.44.N.tar.gz" screensaver_install
-[ $CUSTOM_FONTS -eq 1 ] && install_hack "$TMP_" "" custom_fonts_install
+[ $SCREENSAVER -eq 1 ] && install_hack "$TMP_" "$KINDLE_SS" screensaver_install
+[ $CUSTOM_FONTS -eq 1 ] && install_hack "$TMP_" "$KINDLE_FTS" custom_fonts_install
 
 print_help "end"

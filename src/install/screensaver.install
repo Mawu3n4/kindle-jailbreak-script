@@ -1,7 +1,9 @@
 
+# Specific screensaver hack commands
 function screensaver_install() {
     print_ok "Screensaver hack installed" 1
 
+    # To touch or not to touch, that is my question
     mkdir "$MNT"/linkss 2>/dev/null
     echo -n "    Do you wish to randomize your screensavers ? [Y/n] "
     read YN

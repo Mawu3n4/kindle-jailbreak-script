@@ -1,4 +1,5 @@
 
+# Specific jailbreak hack commands
 function jailbreak_install() {
     print_ok "Jailbreaked ! You need to update your Kindle" 1
 }

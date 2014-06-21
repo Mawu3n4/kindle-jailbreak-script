@@ -1,4 +1,5 @@
 
+# Main install func
 function install_hack() {
     TMP_="$1"
     KINDLE_="$2"
@@ -8,12 +9,15 @@ function install_hack() {
     mount_fct "mount" 2>/dev/null
     extract "$KINDLE_" "$TMP_"
 
+    # Get name of hack currentely installing
     print_ok "Installing $(echo $3 | echo '$FUNC' | sed -re 's/_[a-z]+$//' | sed -e 's/_/ /') hack" 1
 
+    # Find firmare in $TMP_
     FIRMWARE=$(tree -fil "$TMP_" | grep "$INSTALL" | grep $(cat files/config/versions| grep "$KVERSION" | cut -d '|' -f1))
     print_ok "Firmware found: $FIRMWARE" 1
     cp "$FIRMWARE" "$MNT"
 
+    # Exec hack-specific commands (see _hack.install)
     $FUNC
 
     print_help "update"

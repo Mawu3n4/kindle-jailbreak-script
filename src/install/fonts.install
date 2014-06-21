@@ -1,4 +1,5 @@
 
+# Specific custom fonts hack commands
 function custom_fonts_install() {
     print_ok "Custom fonts hack installed" 1
 }

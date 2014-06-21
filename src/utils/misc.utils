@@ -1,11 +1,31 @@
 #!/bin/bash
 
+# Uglyshit below, please close your eyes
+# You've been warned
+# Hard-coded termcaps for pretty colors
 GREEN="[0;32m"
 RED="[0;31m"
 CLEAN="[0m"
+# You can open them now
 
 ROOT_UID=0
 
+# Oh wait, not quite yet
+function print_ok() {
+    LF=$2
+
+    [ $LF -eq 1 ] && echo "$GREEN[+]$CLEAN $1" || echo -n "$GREEN[+]$CLEAN $1"
+}
+
+# Still closed ?
+function print_ko() {
+    LF=$2
+
+    [ $LF -eq 1 ] && echo "$RED[+]$CLEAN $1" || echo -n "$RED[+]$CLEAN $1"
+}
+# You're safe now
+
+# Testing func
 function print_array() {
     local array="$1[@]"
 
@@ -14,6 +34,7 @@ function print_array() {
     done
 }
 
+# Check if $2 (seeking) is in $1 (array)
 function in_array() {
     local array="$1[@]"
     local seeking=$2
@@ -27,18 +48,6 @@ function in_array() {
     done
     echo $in
     return $in
-}
-
-function print_ok() {
-    LF=$2
-
-    [ $LF -eq 1 ] && echo "$GREEN[+]$CLEAN $1" || echo -n "$GREEN[+]$CLEAN $1"
-}
-
-function print_ko() {
-    LF=$2
-
-    [ $LF -eq 1 ] && echo "$RED[+]$CLEAN $1" || echo -n "$RED[+]$CLEAN $1"
 }
 
 function check_root() {

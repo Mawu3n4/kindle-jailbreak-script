@@ -2,6 +2,7 @@
 
 function get_mountpoint() {
     if [ ! -d "$MNT" ]; then
+	# Check if the Kindle was recognized by the distrib and automatically mounted or not
 	CHECK=$(ls -d1 /media/* | grep -i "Kindle")
 
 	if [ ! `echo -n $CHECK | wc -c` -eq 0 ]; then
@@ -38,6 +39,7 @@ function get_device() {
 	DEVICES=(`ls -1 /dev/sd*`)
         DEVICE=$(ls -d1 /dev/* | grep $DEVICE)
         EXIST=$(in_array DEVICES "$DEVICE")
+	echo "    Available devices: ${DEVICES[@]}"
 
         ([ "$DEVICE" == "" ] || [ $EXIST -eq 1 ]) && {
             print_ko "Device not specified or not found: $DEVICE" 1
