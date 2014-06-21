@@ -1,16 +1,5 @@
 
 function screensaver_install() {
-    TMP_=$1
-    KINDLE_="$SRC_PATH/files/archives/kindle-ss-0.44.N.tar.gz"
-
-    mkdir "$TMP_" 2>/dev/null
-    mount_fct "mount" 2>/dev/null
-    extract "$KINDLE_" "$TMP_"
-
-    FIRMWARE=$(tree -fil "$TMP_" | grep "$INSTALL" | grep $(cat files/config/versions| grep "$KVERSION" | cut -d '|' -f1))
-    print_ok "Firmware found: $FIRMWARE" 1
-
-    cp "$FIRMWARE" "$MNT"
     print_ok "Screensaver hack installed" 1
 
     mkdir "$MNT"/linkss 2>/dev/null
@@ -22,8 +11,4 @@ function screensaver_install() {
     if [ "$YN" != "n" ]; then touch "$MNT"/linkss/shuffle; fi
 
     print_ok "Move your custom screensavers to $MNT/linkss/screensavers" 1
-    print_help "update"
-
-    rm -rf "$TMP_"
-    mount_fct "unmount"
 }
