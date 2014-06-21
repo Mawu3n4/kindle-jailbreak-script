@@ -152,7 +152,7 @@ export INSTALL=$INSTALL
 export MOUNTED=$MOUNTED
 
 if [ $JAILBREAK -eq 1 ]; then
-    if [ "$KVERSION" == "Kindle 4" ]; then install_hack "$TMP_" "$KINDLE4" jailbreak_install
+    if [ "$KVERSION" == "Kindle 4" ]; then print_ko "$KVERSION not supported yet" 1
     else; install_hack "$TMP_" "$KINDLE_" jailbreak_install
     fi
 fi
