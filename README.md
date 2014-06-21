@@ -5,11 +5,13 @@
 
 Once your Kindle is Jailbreak, you will be able to add custom fonts, screensavers, scripts, and a lot more.
 
-Jailbreaking your Kindle does not void the warranty
+[Jailbreaking your Kindle does not void the warranty](http://www.amazon.com/Amazon-com-Customer-Service/forum/Fx2EGRL42MHF15D/Tx1XWROEYYNYZUA/12/ref=cm_cd_et_md_pl?_encoding=UTF8&cdMsgNo=283&asin=B00154JDAI&store=fiona-hardware&cdSort=oldest&cdMsgID=Mx2HTAOBPKHJ0P8#Mx2HTAOBPKHJ0P8)
 
 ##How
 
-~~Run the script, you're done.~~
+Run the script, you're done.
+
+_Only for Kindle 1,2, and 3, users at the moment_
 
 
 ##Thanks
