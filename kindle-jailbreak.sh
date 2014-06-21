@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SRC_PATH=`pwd`
+SRC_PATH=$(pwd)
 UTILS_PATH="$SRC_PATH/src/utils"
 INSTALL_PATH="$SRC_PATH/src/install"
 TMP_="$SRC_PATH/tmp"
@@ -11,7 +11,7 @@ function load_items () {
     local PATTERN="$1"
     local L_PATH="$2"
 
-    ITEMS=`ls -1 $L_PATH | grep $PATTERN`
+    ITEMS=$(ls -1 $L_PATH | grep $PATTERN)
 
     for ITEM in $ITEMS; do
 	. /$L_PATH/$ITEM
@@ -26,9 +26,9 @@ check_root
 CUSTOM_FONTS=0
 JAILBREAK=1
 SCREENSAVER=0
-SUPPORTED_VERSIONS=(`cat files/config/versions | cut -d'|' -f2 | tr ' ' '-' | tr '\n' ' '`)
+SUPPORTED_VERSIONS=($(cat files/config/versions | cut -d'|' -f2 | tr ' ' '-' | tr '\n' ' ')
 DEVICE=""
-DEVICES=(`ls -1 /dev/sd*`)
+DEVICES=($(ls -1 /dev/sd*))
 MNT=""
 MOUNTED=0
 KVERSION=""
@@ -132,8 +132,13 @@ export SRC_PATH=$SRC_PATH
 export INSTALL=$INSTALL
 export MOUNTED=$MOUNTED
 
-[ $JAILBREAK -eq 1 ] && jailbreak_install "$TMP_"
-[ $SCREENSAVER -eq 1 ] && screensaver_install "$TMP_"
-[ $CUSTOM_FONTS -eq 1 ] && custom_fonts_install "$TMP_"
+if [ $JAILBREAK -eq 1 ]; then
+    if [ "$KVERSION" == "Kindle 4" ]; then install_hack "$TMP_" "$SRC_PATH/files/archives/kindle-k4-jailbreak-1.7.N.tar.gz" jailbreak_install
+    else; install_hack "$TMP_" "$SRC_PATH/files/archives/kindle-jailbreak-0.12.N.tar.gz" jailbreak_install
+    fi
+fi
+
+[ $SCREENSAVER -eq 1 ] && install_hack "$TMP_" "$SRC_PATH/files/archives/kindle-ss-0.44.N.tar.gz" screensaver_install
+[ $CUSTOM_FONTS -eq 1 ] && install_hack "$TMP_" "" custom_fonts_install
 
 print_help "end"
